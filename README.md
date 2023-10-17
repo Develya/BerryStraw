@@ -7,7 +7,7 @@ You can also code your own extensions to add custom features. See the `Extension
 ## Current features
 - (st) Switch theme: toggle between light and dark theme.
 
-![BerryStraw](screenshot.png)
+![BerryStraw](cli_screenshot.png)
 
 ## Requirements
 `Python 3.10 or higher`
