@@ -1,5 +1,5 @@
 """
-    BerryStraw v1.0.3 by Paintilya
+    BerryStraw v2.0.0 by Paintilya
     Self-bots are not allowed on Discord. Use this at your own risk.
 """
 # Builtin dependencies
@@ -50,10 +50,24 @@ load_dotenv()
 TOKEN = os.getenv('USER_TOKEN')
 PREFIX = os.getenv('PREFIX')
 
-# Global current_theme variable because client.settings.edit() doesn't seem to update it locally
-current_discord_ui_theme = None
-
 client = commands.Bot(command_prefix=PREFIX, self_bot=True)
+
+async def load_bot_extensions():
+    # Error handling per extension to ensure that if one of the extensions 
+    # fails to load, the bot will still be able to run without it
+    # TODO: Make it so it finds extensions dynamically and loads them in a loop
+    # TODO: instead of a try catch per extension DRY
+    print(f"{Fore.GREEN}{Style.DIM}Loading extensions...{Style.RESET_ALL}")
+    try:
+        await client.load_extension("cogs.commands")
+        print(f"{Fore.GREEN}{Style.DIM}Loaded commands{Style.RESET_ALL}")
+    except (
+        discord.ext.commands.ExtensionNotFound, 
+        discord.ext.commands.ExtensionAlreadyLoaded,
+        discord.ext.commands.NoEntryPointError,
+        discord.ext.commands.ExtensionFailed
+    ) as e:
+        print(f"{Fore.RED}Error loading commands: {e}{Style.RESET_ALL}")
 
 @client.event
 async def on_ready():
@@ -61,40 +75,12 @@ async def on_ready():
     current_discord_ui_theme = client.settings.theme
     print(f"\n{'='*75}\n")
     print(f"\n{Fore.GREEN}{Style.BRIGHT}Logged in as {client.user}{Style.RESET_ALL}")
-    print(f"{Fore.GREEN}{Style.BRIGHT}Listening to commands...{Style.RESET_ALL}")
+
+    await load_bot_extensions()
+
+    print(f"{Fore.GREEN}{Style.BRIGHT}Ready!{Style.RESET_ALL}")
     print(f"{Fore.GREEN}{Style.BRIGHT}Prefix: '{PREFIX}'{Style.RESET_ALL}")
 
-@client.command()
-async def st(ctx):
-    """
-    Switch Theme command
-
-    toggles between dark and light themes
-    """
-    global current_discord_ui_theme
-
-    match current_discord_ui_theme:
-        case discord.Theme.light:
-            try:
-                current_discord_ui_theme = discord.Theme.dark
-                await client.settings.edit(theme=discord.Theme.dark)
-            except:
-                await ctx.send("Something went wrong.")
-            finally:
-                return
-        
-        case discord.Theme.dark:
-            try:
-                current_discord_ui_theme = discord.Theme.light
-                await client.settings.edit(theme=discord.Theme.light)
-            except:
-                await ctx.send("Something went wrong.")
-            finally:
-                return
-        
-        case _:
-            await ctx.send("Something went wrong.")
-            return
 
 if __name__ == "__main__":
     print(
@@ -112,4 +98,3 @@ ______ ___________________   _______ ___________  ___  _    _
     except (discord.errors.LoginFailure, discord.errors.ConnectionClosed) as e:
         print(f"\n{e}\nExiting.")
         sys.exit(1)
-    
