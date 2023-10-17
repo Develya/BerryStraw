@@ -1,5 +1,6 @@
 """
     TOOL_NAMEv1.0.0 by Paintilya
+    Python 3.10 or higher
     versioning: vA.B.C
         A: Major changes
         B: New features
@@ -44,7 +45,7 @@ def keyboard_interrupt_handler(signal, frame):
     sys.exit(1)
 signal.signal(signal.SIGINT, keyboard_interrupt_handler)
 
-# Load token from .env file
+# Load .env configuration
 load_dotenv()
 TOKEN = os.getenv('USER_TOKEN')
 PREFIX = os.getenv('PREFIX')
