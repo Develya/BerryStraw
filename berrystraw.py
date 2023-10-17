@@ -1,5 +1,5 @@
 """
-    BerryStraw v1.0.1 by Paintilya
+    BerryStraw v1.0.2 by Paintilya
     Self-bots are not allowed on Discord. Use this at your own risk.
 """
 # Builtin dependencies
@@ -107,6 +107,7 @@ ______ ___________________   _______ ___________  ___  _    _
     print(f"\n{'='*75}\n")
     try:
         client.run(TOKEN)
-    except discord.errors.LoginFailure as e:
+    except (discord.errors.LoginFailure, discord.errors.ConnectionClosed) as e:
         print(f"\n{e}\nExiting.")
         sys.exit(1)
+    
