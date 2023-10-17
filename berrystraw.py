@@ -1,5 +1,5 @@
 """
-    BerryStraw v1.0.0 by Paintilya
+    BerryStraw v1.0.1 by Paintilya
     Self-bots are not allowed on Discord. Use this at your own risk.
 """
 # Builtin dependencies
@@ -35,12 +35,12 @@ except ImportError: # Install dependencies if they are not installed
     except subprocess.CalledProcessError as e:
         print(f"{e}\n{e.output}")
         print("Try running from the current working directory")
-        sys.exit()
+        sys.exit(1)
 
 # Handle CTRL-C exit
 def keyboard_interrupt_handler(signal, frame):
     print(f"{Fore.RED}{Style.BRIGHT}bye!{Style.RESET_ALL}")
-    sys.exit(1)
+    sys.exit(0)
 signal.signal(signal.SIGINT, keyboard_interrupt_handler)
 
 # Load .env configuration
@@ -105,4 +105,8 @@ ______ ___________________   _______ ___________  ___  _    _
 \____/\____/\_| \_\_| \_| \_/ \____/  \_/ \_| \_\_| |_/\/  \/  \n{Style.RESET_ALL}"""
     )
     print(f"\n{'='*75}\n")
-    client.run(TOKEN)
+    try:
+        client.run(TOKEN)
+    except discord.errors.LoginFailure as e:
+        print(f"\n{e}\nExiting.")
+        sys.exit(1)

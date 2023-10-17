@@ -15,7 +15,11 @@ BerryStraw is a self-bot python tool that gives you access to multiple commands 
 - `python-dotenv==1.0.0`
 - `Requests==2.31.0`
 
-## Installation
+## Installation & Usage
 1. Clone this repository.
-2. Fill out `.env` with your token and any command prefix that you want.
+2. Create a `.env` file with this inside:
+    ```
+    USER_TOKEN={INSERT}
+    PREFIX={INSERT}
+    ```
 3. Run `python berrystraw.py` from the current working directory.
