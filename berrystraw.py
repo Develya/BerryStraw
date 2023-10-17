@@ -1,5 +1,5 @@
 """
-    BerryStraw v1.0.2 by Paintilya
+    BerryStraw v1.0.3 by Paintilya
     Self-bots are not allowed on Discord. Use this at your own risk.
 """
 # Builtin dependencies
@@ -21,9 +21,11 @@ except ImportError: # Install dependencies if they are not installed
         exit_code_requirements_install = os.system('pip install -r requirements.txt')
         if exit_code_requirements_install == 0:
             from dotenv import load_dotenv
-            from discord.ext import commands
             import discord
+            from discord.ext import commands
             import requests
+            import colorama
+            from colorama import Fore, Style
         else: 
             # If installation fails - probably because the tool
             # was not ran in the current working directory
