@@ -1,5 +1,5 @@
 """
-    BerryStraw v2.0.0 by Paintilya
+    BerryStraw v2.1.0 by Paintilya
     Self-bots are not allowed on Discord. Use this at your own risk.
 """
 # Builtin dependencies
@@ -52,22 +52,21 @@ PREFIX = os.getenv('PREFIX')
 
 client = commands.Bot(command_prefix=PREFIX, self_bot=True)
 
-async def load_bot_extensions():
-    # Error handling per extension to ensure that if one of the extensions 
-    # fails to load, the bot will still be able to run without it
-    # TODO: Make it so it finds extensions dynamically and loads them in a loop
-    # TODO: instead of a try catch per extension DRY
+async def load_bot_extensions(): # Dynamically detects extensions and loads them
     print(f"{Fore.GREEN}{Style.DIM}Loading extensions...{Style.RESET_ALL}")
-    try:
-        await client.load_extension("cogs.commands")
-        print(f"{Fore.GREEN}{Style.DIM}Loaded commands{Style.RESET_ALL}")
-    except (
-        discord.ext.commands.ExtensionNotFound, 
-        discord.ext.commands.ExtensionAlreadyLoaded,
-        discord.ext.commands.NoEntryPointError,
-        discord.ext.commands.ExtensionFailed
-    ) as e:
-        print(f"{Fore.RED}Error loading commands: {e}{Style.RESET_ALL}")
+
+    for extension in [f for f in os.listdir('./extensions') if f.endswith('.py')]:
+        try:
+            extension = extension.replace('.py', '')
+            await client.load_extension(f"extensions.{extension}")
+            print(f"{Fore.GREEN}{Style.DIM}Loaded {extension}{Style.RESET_ALL}")
+        except (
+            discord.ext.commands.ExtensionNotFound,
+            discord.ext.commands.ExtensionAlreadyLoaded,
+            discord.ext.commands.NoEntryPointError,
+            discord.ext.commands.ExtensionFailed
+        ) as e:
+            print(f"{Fore.RED}Error loading {extension}: {e}{Style.RESET_ALL}")
 
 @client.event
 async def on_ready():
@@ -90,7 +89,7 @@ ______ ___________________   _______ ___________  ___  _    _
 | |_/ / |__ | |_/ / |_/ /\ V /\ `--.  | | | |_/ / /_\ \ |  | |
 | ___ \  __||    /|    /  \ /  `--. \ | | |    /|  _  | |/\| |
 | |_/ / |___| |\ \| |\ \  | | /\__/ / | | | |\ \| | | \  /\  /
-\____/\____/\_| \_\_| \_| \_/ \____/  \_/ \_| \_\_| |_/\/  \/  \n{Style.RESET_ALL}"""
+\____/\____/\_| \_\_| \_| \_/ \____/  \_/ \_| \_\_| |_/\/  \/  \n v2.1.0{Style.RESET_ALL}"""
     )
     print(f"\n{'='*75}\n")
     try:
