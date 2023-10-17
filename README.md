@@ -1,10 +1,13 @@
-![BerryStraw](screenshot.png)
+![BerryStraw](logo2.png)
 
 ## About
-BerryStraw is a self-bot python tool that gives you access to multiple commands to make your discord experience a little more fun and easy.
+BerryStraw is a self-bot python tool that gives you access to multiple commands to make your discord experience a little more fun and easy. 
+You can also code your own extensions to add custom features. See the `Extensions` section for more information.
 
 ## Current features
 - (st) Switch theme: toggle between light and dark theme.
+
+![BerryStraw](screenshot.png)
 
 ## Requirements
 `Python 3.10 or higher`
@@ -23,3 +26,6 @@ BerryStraw is a self-bot python tool that gives you access to multiple commands 
     PREFIX={INSERT}
     ```
 3. Run `python berrystraw.py` from the current working directory.
+
+## Extensions
+Code your own extensions from the template located at `extensions/example.py`. BerryStraw will automatically detect it and load it.
