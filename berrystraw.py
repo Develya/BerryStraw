@@ -1,12 +1,8 @@
 """
-    TOOL_NAMEv1.0.0 by Paintilya
-    Python 3.10 or higher
-    versioning: vA.B.C
-        A: Major changes
-        B: New features
-        C: Bug fixes
+    BerryStraw v1.0.0 by Paintilya
     Self-bots are not allowed on Discord. Use this at your own risk.
 """
+# Builtin dependencies
 import os
 import json
 import sys
@@ -28,7 +24,9 @@ except ImportError: # Install dependencies if they are not installed
             from discord.ext import commands
             import discord
             import requests
-        else:
+        else: 
+            # If installation fails - probably because the tool
+            # was not ran in the current working directory
             raise subprocess.CalledProcessError(
                 cmd='pip install -r requirements.txt',
                 returncode=exit_code_requirements_install,
@@ -50,15 +48,15 @@ load_dotenv()
 TOKEN = os.getenv('USER_TOKEN')
 PREFIX = os.getenv('PREFIX')
 
-# Global current_theme variable because client.settings.edit doesn't seem to update it locally
-current_theme = None
+# Global current_theme variable because client.settings.edit() doesn't seem to update it locally
+current_discord_ui_theme = None
 
 client = commands.Bot(command_prefix=PREFIX, self_bot=True)
 
 @client.event
 async def on_ready():
-    global current_theme
-    current_theme = client.settings.theme
+    global current_discord_ui_theme
+    current_discord_ui_theme = client.settings.theme
     print(f"\n{'='*75}\n")
     print(f"\n{Fore.GREEN}{Style.BRIGHT}Logged in as {client.user}{Style.RESET_ALL}")
     print(f"{Fore.GREEN}{Style.BRIGHT}Listening to commands...{Style.RESET_ALL}")
@@ -71,12 +69,12 @@ async def st(ctx):
 
     toggles between dark and light themes
     """
-    global current_theme
+    global current_discord_ui_theme
 
-    match current_theme:
+    match current_discord_ui_theme:
         case discord.Theme.light:
             try:
-                current_theme = discord.Theme.dark
+                current_discord_ui_theme = discord.Theme.dark
                 await client.settings.edit(theme=discord.Theme.dark)
             except:
                 await ctx.send("Something went wrong.")
@@ -85,7 +83,7 @@ async def st(ctx):
         
         case discord.Theme.dark:
             try:
-                current_theme = discord.Theme.light
+                current_discord_ui_theme = discord.Theme.light
                 await client.settings.edit(theme=discord.Theme.light)
             except:
                 await ctx.send("Something went wrong.")
@@ -99,14 +97,12 @@ async def st(ctx):
 if __name__ == "__main__":
     print(
         f"""{Fore.RED}{Style.BRIGHT}
- (       (    (                )          
- )\ )    )\ ) )\ )       (  ( /(   *   )  
-(()/((  (()/((()/(     ( )\ )\())` )  /(  
- /(_))\  /(_))/(_))___ )((_|(_)\  ( )(_)) 
-(_))((_)(_)) (_))_|___((_)_  ((_)(_(_())  
-/ __| __| |  | |_      | _ )/ _ \|_   _|  
-\__ \ _|| |__| __|     | _ \ (_) | | |    
-|___/___|____|_|       |___/\___/  |_|    \n{Style.RESET_ALL}"""
+______ ___________________   _______ ___________  ___  _    _ 
+| ___ \  ___| ___ \ ___ \ \ / /  ___|_   _| ___ \/ _ \| |  | |
+| |_/ / |__ | |_/ / |_/ /\ V /\ `--.  | | | |_/ / /_\ \ |  | |
+| ___ \  __||    /|    /  \ /  `--. \ | | |    /|  _  | |/\| |
+| |_/ / |___| |\ \| |\ \  | | /\__/ / | | | |\ \| | | \  /\  /
+\____/\____/\_| \_\_| \_| \_/ \____/  \_/ \_| \_\_| |_/\/  \/  \n{Style.RESET_ALL}"""
     )
     print(f"\n{'='*75}\n")
     client.run(TOKEN)
