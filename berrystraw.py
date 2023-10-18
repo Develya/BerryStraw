@@ -1,6 +1,6 @@
 """
-    BerryStraw v2.1.0 by Paintilya
-    Self-bots are not allowed on Discord. Use this at your own risk.
+    BerryStraw by Paintilya
+    Self-bots are not allowed on Discord. Use this at your own risks.
 """
 # Builtin dependencies
 import os
@@ -26,7 +26,7 @@ except ImportError: # Install dependencies if they are not installed
             import requests
             import colorama
             from colorama import Fore, Style
-        else: 
+        else:
             # If installation fails - probably because the tool
             # was not ran in the current working directory
             raise subprocess.CalledProcessError(
@@ -49,6 +49,7 @@ signal.signal(signal.SIGINT, keyboard_interrupt_handler)
 load_dotenv()
 TOKEN = os.getenv('USER_TOKEN')
 PREFIX = os.getenv('PREFIX')
+VERSION = os.getenv('VERSION')
 
 client = commands.Bot(command_prefix=PREFIX, self_bot=True)
 
@@ -89,7 +90,7 @@ ______ ___________________   _______ ___________  ___  _    _
 | |_/ / |__ | |_/ / |_/ /\ V /\ `--.  | | | |_/ / /_\ \ |  | |
 | ___ \  __||    /|    /  \ /  `--. \ | | |    /|  _  | |/\| |
 | |_/ / |___| |\ \| |\ \  | | /\__/ / | | | |\ \| | | \  /\  /
-\____/\____/\_| \_\_| \_| \_/ \____/  \_/ \_| \_\_| |_/\/  \/  \n v2.1.0{Style.RESET_ALL}"""
+\____/\____/\_| \_\_| \_| \_/ \____/  \_/ \_| \_\_| |_/\/  \/  \n v{VERSION}{Style.RESET_ALL}"""
     )
     print(f"\n{'='*75}\n")
     try:

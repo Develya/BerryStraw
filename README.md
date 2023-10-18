@@ -1,6 +1,6 @@
 ![BerryStraw](logo2.png)
 
-⚠️ Self-bots are not allowed on Discord. Use this at your own risk.
+⚠️ Self-bots are not allowed on Discord. Use this at your own risks.
 ## About
 BerryStraw is a self-bot python tool that gives you access to multiple commands to make your discord experience a little more fun and easy. 
 You can also code your own extensions to add custom features. See the `Extensions` section for more information.

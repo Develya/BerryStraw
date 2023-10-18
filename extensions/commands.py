@@ -1,4 +1,5 @@
 from discord.ext import commands
+import discord
 
 class Commands(commands.Cog):
     def __init__(self, client):
@@ -13,7 +14,10 @@ class Commands(commands.Cog):
         Toggles between dark and light themes
         """
 
-        match current_discord_ui_theme:
+        if self.current_discord_ui_theme == None:
+            self.current_discord_ui_theme = self.client.settings.theme
+
+        match self.current_discord_ui_theme:
             case discord.Theme.light:
                 try:
                     self.current_discord_ui_theme = discord.Theme.dark
