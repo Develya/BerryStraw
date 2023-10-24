@@ -1,6 +1,6 @@
 """
-    BerryStraw v1.0.2 by Paintilya
-    Self-bots are not allowed on Discord. Use this at your own risk.
+    BerryStraw by Paintilya
+    Self-bots are not allowed on Discord. Use this at your own risks.
 """
 # Builtin dependencies
 import os
@@ -21,10 +21,12 @@ except ImportError: # Install dependencies if they are not installed
         exit_code_requirements_install = os.system('pip install -r requirements.txt')
         if exit_code_requirements_install == 0:
             from dotenv import load_dotenv
-            from discord.ext import commands
             import discord
+            from discord.ext import commands
             import requests
-        else: 
+            import colorama
+            from colorama import Fore, Style
+        else:
             # If installation fails - probably because the tool
             # was not ran in the current working directory
             raise subprocess.CalledProcessError(
@@ -47,52 +49,40 @@ signal.signal(signal.SIGINT, keyboard_interrupt_handler)
 load_dotenv()
 TOKEN = os.getenv('USER_TOKEN')
 PREFIX = os.getenv('PREFIX')
-
-# Global current_theme variable because client.settings.edit() doesn't seem to update it locally
-current_discord_ui_theme = None
+VERSION = os.getenv('VERSION')
+with open('info.json', 'r') as f:
+    info_json = json.load(f)
+    VERSION = info_json['version']
 
 client = commands.Bot(command_prefix=PREFIX, self_bot=True)
+
+async def load_bot_extensions(): # Dynamically detects extensions and loads them
+    print(f"{Fore.RED}Loading extensions...{Style.RESET_ALL}")
+
+    for extension in [f for f in os.listdir('./extensions') if f.endswith('.py')]:
+        try:
+            extension = extension.replace('.py', '')
+            await client.load_extension(f"extensions.{extension}")
+            print(f"{Fore.RED}> Loaded {extension}{Style.RESET_ALL}")
+        except (
+            discord.ext.commands.ExtensionNotFound,
+            discord.ext.commands.ExtensionAlreadyLoaded,
+            discord.ext.commands.NoEntryPointError,
+            discord.ext.commands.ExtensionFailed
+        ) as e:
+            print(f"{Fore.RED}Error loading {extension}: {e}{Style.RESET_ALL}")
 
 @client.event
 async def on_ready():
     global current_discord_ui_theme
     current_discord_ui_theme = client.settings.theme
     print(f"\n{'='*75}\n")
-    print(f"\n{Fore.GREEN}{Style.BRIGHT}Logged in as {client.user}{Style.RESET_ALL}")
-    print(f"{Fore.GREEN}{Style.BRIGHT}Listening to commands...{Style.RESET_ALL}")
-    print(f"{Fore.GREEN}{Style.BRIGHT}Prefix: '{PREFIX}'{Style.RESET_ALL}")
+    print(f"\n{Fore.RED}{Style.BRIGHT}Logged in as {client.user}{Style.RESET_ALL}")
 
-@client.command()
-async def st(ctx):
-    """
-    Switch Theme command
+    await load_bot_extensions()
 
-    toggles between dark and light themes
-    """
-    global current_discord_ui_theme
-
-    match current_discord_ui_theme:
-        case discord.Theme.light:
-            try:
-                current_discord_ui_theme = discord.Theme.dark
-                await client.settings.edit(theme=discord.Theme.dark)
-            except:
-                await ctx.send("Something went wrong.")
-            finally:
-                return
-        
-        case discord.Theme.dark:
-            try:
-                current_discord_ui_theme = discord.Theme.light
-                await client.settings.edit(theme=discord.Theme.light)
-            except:
-                await ctx.send("Something went wrong.")
-            finally:
-                return
-        
-        case _:
-            await ctx.send("Something went wrong.")
-            return
+    print(f"{Fore.RED}{Style.BRIGHT}Ready!{Style.RESET_ALL}")
+    print(f"{Fore.RED}{Style.BRIGHT}Prefix: '{PREFIX}'{Style.RESET_ALL}")
 
 if __name__ == "__main__":
     print(
@@ -102,7 +92,7 @@ ______ ___________________   _______ ___________  ___  _    _
 | |_/ / |__ | |_/ / |_/ /\ V /\ `--.  | | | |_/ / /_\ \ |  | |
 | ___ \  __||    /|    /  \ /  `--. \ | | |    /|  _  | |/\| |
 | |_/ / |___| |\ \| |\ \  | | /\__/ / | | | |\ \| | | \  /\  /
-\____/\____/\_| \_\_| \_| \_/ \____/  \_/ \_| \_\_| |_/\/  \/  \n{Style.RESET_ALL}"""
+\____/\____/\_| \_\_| \_| \_/ \____/  \_/ \_| \_\_| |_/\/  \/  \n v{VERSION}{Style.RESET_ALL}"""
     )
     print(f"\n{'='*75}\n")
     try:
@@ -110,4 +100,3 @@ ______ ___________________   _______ ___________  ___  _    _
     except (discord.errors.LoginFailure, discord.errors.ConnectionClosed) as e:
         print(f"\n{e}\nExiting.")
         sys.exit(1)
-    
