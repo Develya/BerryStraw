@@ -50,31 +50,20 @@ load_dotenv()
 TOKEN = os.getenv('USER_TOKEN')
 PREFIX = os.getenv('PREFIX')
 VERSION = os.getenv('VERSION')
-<<<<<<< HEAD
 with open('info.json', 'r') as f:
     info_json = json.load(f)
     VERSION = info_json['version']
-=======
->>>>>>> 7423bb0cbc4afdb8197b64108c04346bf4627a14
 
 client = commands.Bot(command_prefix=PREFIX, self_bot=True)
 
 async def load_bot_extensions(): # Dynamically detects extensions and loads them
-<<<<<<< HEAD
     print(f"{Fore.RED}Loading extensions...{Style.RESET_ALL}")
-=======
-    print(f"{Fore.GREEN}{Style.DIM}Loading extensions...{Style.RESET_ALL}")
->>>>>>> 7423bb0cbc4afdb8197b64108c04346bf4627a14
 
     for extension in [f for f in os.listdir('./extensions') if f.endswith('.py')]:
         try:
             extension = extension.replace('.py', '')
             await client.load_extension(f"extensions.{extension}")
-<<<<<<< HEAD
             print(f"{Fore.RED}> Loaded {extension}{Style.RESET_ALL}")
-=======
-            print(f"{Fore.GREEN}{Style.DIM}Loaded {extension}{Style.RESET_ALL}")
->>>>>>> 7423bb0cbc4afdb8197b64108c04346bf4627a14
         except (
             discord.ext.commands.ExtensionNotFound,
             discord.ext.commands.ExtensionAlreadyLoaded,
@@ -88,22 +77,12 @@ async def on_ready():
     global current_discord_ui_theme
     current_discord_ui_theme = client.settings.theme
     print(f"\n{'='*75}\n")
-<<<<<<< HEAD
     print(f"\n{Fore.RED}{Style.BRIGHT}Logged in as {client.user}{Style.RESET_ALL}")
 
     await load_bot_extensions()
 
     print(f"{Fore.RED}{Style.BRIGHT}Ready!{Style.RESET_ALL}")
     print(f"{Fore.RED}{Style.BRIGHT}Prefix: '{PREFIX}'{Style.RESET_ALL}")
-=======
-    print(f"\n{Fore.GREEN}{Style.BRIGHT}Logged in as {client.user}{Style.RESET_ALL}")
-
-    await load_bot_extensions()
-
-    print(f"{Fore.GREEN}{Style.BRIGHT}Ready!{Style.RESET_ALL}")
-    print(f"{Fore.GREEN}{Style.BRIGHT}Prefix: '{PREFIX}'{Style.RESET_ALL}")
-
->>>>>>> 7423bb0cbc4afdb8197b64108c04346bf4627a14
 
 if __name__ == "__main__":
     print(
