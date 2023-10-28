@@ -1,9 +1,6 @@
 colorama==0.4.6
 discord.py-self==2.0.0
-<<<<<<< HEAD
 psutil==5.9.6
-=======
->>>>>>> 7423bb0cbc4afdb8197b64108c04346bf4627a14
 python-dotenv==1.0.0
 Requests==2.31.0
 streamlit==1.27.2
